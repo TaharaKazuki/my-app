@@ -3,7 +3,7 @@ import SearchBar from './SearchBar';
 
 class App extends Component {
   onSearchSubmit () {
-    console.info('通過')
+
   }
   render () {
     return (
