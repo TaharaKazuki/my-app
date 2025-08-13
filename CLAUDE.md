@@ -18,7 +18,7 @@
 - **Next.js 15.4.6** App Router使用 (`/src/app/`)
 - **React 19.1.0**
 - **TypeScript** strictモード有効
-- **Tailwind CSS v4** スタイリング用
+- **Tailwind CSS v4** スタイリング用（セットアップ詳細は`.claude/tailwind_document.md`参照）
 - **Geistフォントファミリー** Google Fontsから
 
 ### プロジェクト構造
@@ -108,3 +108,20 @@ ClerkとSupabaseを統合してRow Level Security (RLS)を実装する方法に�
 - 両環境で統一した実装: カスタムヘッダー方式（API Routes経由）
 
 詳細な実装方法については、`.claude/clerk_supabase_integration_document.md`を参照してください。
+
+## Tailwind CSS v4セットアップ
+
+Tailwind CSS v4のセットアップと設定方法については`.claude/tailwind_document.md`を参照してください。
+
+### Tailwindドキュメントの概要
+- **ゼロコンフィグレーション**: v4ではデフォルトで設定ファイル不要
+- **必要な設定**: PostCSS設定とCSSインポートのみ
+- **重要な変更点**: v3からv4への移行時の注意事項
+- **推奨事項**: デフォルトのユーティリティクラスを使用し、カスタムCSSは最小限に
+
+### v4での主な変更
+- `@import "tailwindcss"`を使用（v3の`@tailwind`ディレクティブは廃止）
+- 設定ファイル（`tailwind.config.js`）はオプショナル
+- PostCSS設定で`@tailwindcss/postcss`プラグインを使用
+
+詳細なセットアップ手順については、`.claude/tailwind_document.md`を参照してください。
