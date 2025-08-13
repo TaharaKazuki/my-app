@@ -1,103 +1,180 @@
-import Image from "next/image";
+import Link from 'next/link'
+import { auth } from '@clerk/nextjs/server'
+import { redirect } from 'next/navigation'
+import { Button } from '@/components/ui/button'
+import { Header } from '@/components/layout/header'
+import { Wallet, TrendingUp, PieChart, Calendar } from 'lucide-react'
 
-export default function Home() {
+export default async function HomePage() {
+  const { userId } = await auth()
+  
+  if (userId) {
+    redirect('/dashboard')
+  }
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <>
+      <Header />
+      <main>
+        {/* ヒーローセクション */}
+        <section className="bg-gradient-to-br from-blue-50 to-white py-20">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl mx-auto text-center">
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-blue-100 rounded-full mb-6">
+                <Wallet className="w-10 h-10 text-blue-600" />
+              </div>
+              <h1 className="text-5xl font-bold text-gray-900 mb-6">
+                3つの機能だけ。
+                <br />
+                続けられる家計簿
+              </h1>
+              <p className="text-xl text-gray-600 mb-8">
+                支出記録、カテゴリ分け、ダッシュボード表示。
+                <br />
+                必要最小限の機能で、誰でも簡単に継続できます。
+              </p>
+              <div className="flex gap-4 justify-center">
+                <Link href="/sign-up">
+                  <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all">
+                    無料で始める
+                  </Button>
+                </Link>
+                <Link href="/sign-in">
+                  <Button size="lg" variant="outline" className="rounded-xl px-8 py-6 text-lg">
+                    ログイン
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+        {/* 特徴セクション */}
+        <section className="py-20 bg-white">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+              シンプルな3つの機能
+            </h2>
+            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
+                  <TrendingUp className="w-8 h-8 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  支出記録
+                </h3>
+                <p className="text-gray-600">
+                  金額とカテゴリを選ぶだけ。
+                  10秒で記録完了。
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
+                  <PieChart className="w-8 h-8 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  カテゴリ分け
+                </h3>
+                <p className="text-gray-600">
+                  9種類の固定カテゴリで
+                  迷わず分類。
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
+                  <Calendar className="w-8 h-8 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  ダッシュボード
+                </h3>
+                <p className="text-gray-600">
+                  週次・月次の支出を
+                  一目で把握。
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 料金セクション */}
+        <section className="py-20 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+              料金プラン
+            </h2>
+            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              <div className="bg-white rounded-2xl shadow-lg p-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                  無料プラン
+                </h3>
+                <p className="text-3xl font-bold text-gray-900 mb-6">
+                  ¥0<span className="text-lg text-gray-600">/月</span>
+                </p>
+                <ul className="space-y-3 mb-8">
+                  <li className="flex items-start">
+                    <span className="text-green-500 mr-2">✓</span>
+                    <span className="text-gray-700">支出記録（無制限）</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-green-500 mr-2">✓</span>
+                    <span className="text-gray-700">週次・月次の合計表示</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-green-500 mr-2">✓</span>
+                    <span className="text-gray-700">支出履歴の閲覧</span>
+                  </li>
+                </ul>
+                <Link href="/sign-up" className="block">
+                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-lg py-3">
+                    無料で始める
+                  </Button>
+                </Link>
+              </div>
+              
+              <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl shadow-lg p-8 text-white">
+                <h3 className="text-2xl font-bold mb-4">
+                  プレミアムプラン
+                </h3>
+                <p className="text-3xl font-bold mb-6">
+                  $10<span className="text-lg opacity-90">/月</span>
+                </p>
+                <ul className="space-y-3 mb-8">
+                  <li className="flex items-start">
+                    <span className="mr-2">✓</span>
+                    <span>無料プランの全機能</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="mr-2">✓</span>
+                    <span>カテゴリ別詳細グラフ</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="mr-2">✓</span>
+                    <span>期間比較分析</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="mr-2">✓</span>
+                    <span>支出トレンド分析</span>
+                  </li>
+                </ul>
+                <Link href="/sign-up" className="block">
+                  <Button className="w-full bg-white text-blue-600 hover:bg-gray-100 rounded-lg py-3">
+                    プレミアムで始める
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* フッター */}
+        <footer className="bg-gray-900 text-white py-8">
+          <div className="container mx-auto px-4 text-center">
+            <p className="text-gray-400">
+              © 2025 Money Tracker. All rights reserved.
+            </p>
+          </div>
+        </footer>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+    </>
+  )
 }

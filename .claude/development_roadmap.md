@@ -18,11 +18,11 @@
   - [x] Supabaseクラウドプロジェクト作成（設定済み）
   - [x] Clerkダッシュボード設定（設定済み）
  
-- [ ] **認証システム**
-  - ClerkProvider設定（layout.tsx）
-  - middleware.ts（認証保護）
-  - サインイン/サインアップページ（/sign-in, /sign-up）
-  - エラーハンドリング実装
+- [x] **認証システム**
+  - [x] ClerkProvider設定（layout.tsx）
+  - [x] middleware.ts（認証保護）
+  - [x] サインイン/サインアップページ（/sign-in, /sign-up）
+  - [x] エラーハンドリング実装（error.tsx, not-found.tsx, global-error.tsx）
  
 - [ ] **データベース設計**
   - Supabaseテーブル作成（users, expenses, categories）
@@ -30,15 +30,16 @@
   - カテゴリマスタデータ投入
   - 型定義ファイル作成
  
-- [x] **共通コンポーネント**（部分完了）
-  - [ ] レイアウト（ヘッダー、ナビゲーション）
-  - [x] UIコンポーネント（Button, Card, Input, Label, Dialog, Select, Tabs追加済み）
+- [x] **共通コンポーネント**
+  - [x] レイアウト（ヘッダー、認証/ダッシュボードレイアウト）
+  - [x] UIコンポーネント（Button, Card, Input, Label, Dialog, Select, Tabs, Sonner追加済み）
   - [x] 型定義ファイル（/src/types/index.ts作成済み）
   - [x] ユーティリティ関数（通貨フォーマット、数値フォーマット）
   - [x] カテゴリ定数とアイコン定義（/src/lib/constants.ts）
   - [x] Supabaseクライアント設定（/src/lib/supabase.ts）
-  - [ ] エラーバウンダリー
-  - [ ] ローディング状態
+  - [x] エラーバウンダリー（error.tsx, not-found.tsx, global-error.tsx）
+  - [x] トップページ（ランディングページ）
+  - [x] ダッシュボードページ（基本実装）
  
 ### フェーズ2: 支出管理機能（推定: 2-3日）
  
