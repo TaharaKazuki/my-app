@@ -10,7 +10,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
  
 ## 開発ロードマップと進捗管理
  
-開発は`.claude/implementation_roadmap.md`のチェックリストに従って進めます。
+開発は`.claude/development_roadmap.md`のチェックリストに従って進めます。
  
 ### タスク管理方法
 - 各フェーズの実装内容はチェックリスト形式で記載
@@ -75,7 +75,7 @@ my-app/
 │   └── types/                 # TypeScript型定義
 ├── .claude/                   # プロジェクトドキュメント
 │   ├── requirements.md        # 要件定義書
-│   ├── implementation_roadmap.md # 開発ロードマップ（進捗管理）
+│   ├── development_roadmap.md # 開発ロードマップ（進捗管理）
 │   ├── design_system.md       # デザインシステム
 │   ├── supabase_document.md   # Supabase実装ガイド
 │   ├── clerk_document.md      # Clerk実装ガイド
@@ -109,7 +109,7 @@ my-app/
 `.claude/requirements.md` - プロジェクトの詳細な要件定義
  
 ### 開発ロードマップ
-`.claude/implementation_roadmap.md` - 9つのフェーズで構成される開発計画と進捗管理
+`.claude/development_roadmap.md` - 9つのフェーズで構成される開発計画と進捗管理
  
 ### デザインシステム
 `.claude/design_system.md` - UIコンポーネントのデザインガイドライン

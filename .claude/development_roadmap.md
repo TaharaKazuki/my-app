@@ -12,11 +12,11 @@
 完成度の高い基盤と認証・データベースを一気に構築します。
  
 #### 実装内容
-- [ ] **環境構築**
-  - パッケージインストール（Supabase, Clerk, shadcn/ui, react-hook-form, zod, lucide-react, date-fns）
-  - 環境変数設定（.env.local）
-  - Supabaseクラウドプロジェクト作成
-  - Clerkダッシュボード設定
+- [x] **環境構築**
+  - [x] パッケージインストール（Supabase, Clerk, shadcn/ui, react-hook-form, lucide-react, date-fns, recharts）
+  - [x] 環境変数設定（.env.local.example作成済み、.env.localは設定済み）
+  - [x] Supabaseクラウドプロジェクト作成（設定済み）
+  - [x] Clerkダッシュボード設定（設定済み）
  
 - [ ] **認証システム**
   - ClerkProvider設定（layout.tsx）
@@ -30,11 +30,15 @@
   - カテゴリマスタデータ投入
   - 型定義ファイル作成
  
-- [ ] **共通コンポーネント**
-  - レイアウト（ヘッダー、ナビゲーション）
-  - UIコンポーネント（ボタン、フォーム、カード）
-  - エラーバウンダリー
-  - ローディング状態
+- [x] **共通コンポーネント**（部分完了）
+  - [ ] レイアウト（ヘッダー、ナビゲーション）
+  - [x] UIコンポーネント（Button, Card, Input, Label, Dialog, Select, Tabs追加済み）
+  - [x] 型定義ファイル（/src/types/index.ts作成済み）
+  - [x] ユーティリティ関数（通貨フォーマット、数値フォーマット）
+  - [x] カテゴリ定数とアイコン定義（/src/lib/constants.ts）
+  - [x] Supabaseクライアント設定（/src/lib/supabase.ts）
+  - [ ] エラーバウンダリー
+  - [ ] ローディング状態
  
 ### フェーズ2: 支出管理機能（推定: 2-3日）
  
