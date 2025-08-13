@@ -90,3 +90,21 @@ Supabaseの使用方法については`.claude/supabase_document.md`を参照し
 - スタイリング: TailwindCSS
 
 詳細な実装方法については、`.claude/clerk_document.md`を参照してください。
+
+## ClerkとSupabaseの連携
+
+ClerkとSupabaseを統合してRow Level Security (RLS)を実装する方法については`.claude/clerk_supabase_integration_document.md`を参照してください。
+
+### 連携ドキュメントの概要
+- **RLS統合の課題**: ClerkとSupabaseのユーザーID互換性問題
+- **推奨実装方法**: カスタムヘッダー方式（API Routes経由）
+- **環境別対応**: Supabase Docker CLIとSupabase Cloud両方で動作
+- **セキュリティ**: 安全なデータアクセス制御の実装
+- **実装パターン**: サーバーサイドとクライアントサイドの使い分け
+
+### 推奨アプローチ
+- Supabase Docker CLI環境: カスタムヘッダー方式を使用
+- Supabase Cloud環境: カスタムヘッダー方式（推奨）またはJWT方式
+- 両環境で統一した実装: カスタムヘッダー方式（API Routes経由）
+
+詳細な実装方法については、`.claude/clerk_supabase_integration_document.md`を参照してください。
