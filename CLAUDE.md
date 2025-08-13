@@ -1,127 +1,155 @@
 # CLAUDE.md
-
-このファイルは、このリポジトリでコードを扱う際のClaude Code (claude.ai/code)へのガイダンスを提供します。
-
-## コマンド
-
-### 開発
-- `npm run dev` - 高速リフレッシュのためのTurbopackを使用して開発サーバーを起動
-- `npm run build` - 最適化された本番ビルドを作成
-- `npm run start` - 本番サーバーを起動（ビルド後に実行）
-- `npm run lint` - ESLintを実行してコード品質をチェック
-
+ 
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+ 
+## プロジェクト概要
+ 
+**Money Tracker** - シンプルで継続できる家計簿アプリ
+ 
+「3つの機能だけ。続けられる家計簿」をコンセプトに、支出記録、カテゴリ分け、ダッシュボード表示の必要最小限の機能で構成されています。
+ 
+## 開発ロードマップと進捗管理
+ 
+開発は`.claude/implementation_roadmap.md`のチェックリストに従って進めます。
+ 
+### タスク管理方法
+- 各フェーズの実装内容はチェックリスト形式で記載
+- 完了したタスクは`[ ]`を`[x]`に変更して記録
+- フェーズ1から順番に実装を進める
+ 
+```markdown
+# 実装前
+- [ ] パッケージインストール（Supabase, Clerk, shadcn/ui）
+ 
+# 実装後
+- [x] パッケージインストール（Supabase, Clerk, shadcn/ui）
+```
+ 
+## 開発コマンド
+ 
+```bash
+npm run dev      # 開発サーバー起動（Turbopack使用）
+npm run build    # プロダクションビルド
+npm start        # プロダクションサーバー起動
+npm run lint     # ESLint実行
+npm install      # パッケージインストール
+```
+ 
+## 環境設定
+ 
+### 必要な環境変数（.env.local）
+ 
+以下は設定済みとする。
+ 
+```env
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+ 
+# Clerk
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+CLERK_SECRET_KEY=your_clerk_secret_key
+ 
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL=/dashboard
+NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL=/dashboard
+ 
+# Billing Portal URL
+NEXT_PUBLIC_BILLING_URL=https://accounts.your-domain.com/user
+```
+ 
+## プロジェクト構造
+ 
+```
+my-app/
+├── src/
+│   ├── app/                    # App Router
+│   │   ├── (auth)/            # 認証関連ページ
+│   │   ├── (dashboard)/       # ダッシュボード（認証必須）
+│   │   ├── api/               # API Routes
+│   │   └── layout.tsx         # ルートレイアウト
+│   ├── components/            # 共通コンポーネント
+│   ├── lib/                   # ユーティリティ、設定
+│   └── types/                 # TypeScript型定義
+├── .claude/                   # プロジェクトドキュメント
+│   ├── requirements.md        # 要件定義書
+│   ├── implementation_roadmap.md # 開発ロードマップ（進捗管理）
+│   ├── design_system.md       # デザインシステム
+│   ├── supabase_document.md   # Supabase実装ガイド
+│   ├── clerk_document.md      # Clerk実装ガイド
+│   ├── clerk_supabase_integration_document.md # 認証連携ガイド
+│   └── tailwind_document.md   # Tailwind CSS v4実装ガイド
+└── public/                    # 静的ファイル
+```
+ 
 ## アーキテクチャ
-
-これはTypeScriptとTailwind CSS v4を使用したApp Routerアーキテクチャを採用したNext.js 15アプリケーションです。
-
+ 
 ### 技術スタック
-- **Next.js 15.4.6** App Router使用 (`/src/app/`)
-- **React 19.1.0**
-- **TypeScript** strictモード有効
-- **Tailwind CSS v4** スタイリング用（セットアップ詳細は`.claude/tailwind_document.md`参照）
-- **Geistフォントファミリー** Google Fontsから
-
-### プロジェクト構造
-- `/src/app/` - App Routerのページとレイアウト
-- `/src/app/globals.css` - Tailwindインポートを含むグローバルスタイル
-- `/public/` - 静的アセット
-- パスエイリアス: `@/*`は`./src/*`にマップ
-
-### 主要な設定
-- **TypeScript**: Strictモード有効、ES2017ターゲット
-- **ESLint**: TypeScriptサポート付きNext.js core web vitalsルール
-- **Tailwind**: PostCSS付きv4、CSSカスタムプロパティによるダークモードサポート含む
-
-### 開発ノート
-- 現在テストフレームワークは未インストール
-- 開発環境では高速ビルドのためTurbopackがデフォルトで有効
-- CSSはテーマ設定（ライト/ダークモード）にカスタムプロパティを使用
-- Vercelデプロイ対応済み
-
-## デザインシステム
-
-UIデザインを実装する際は、必ず`.claude/design_system.md`のガイドラインに従ってください。このファイルには以下が定義されています：
-
-- **配色システム**: WCAGアクセシビリティ基準を満たすカラーパレット
-- **タイポグラフィ**: フォントサイズ、ウェイト、行間の階層
-- **コンポーネント設計**: ボタン、カード、入力フィールドなどの標準仕様
-- **余白・角丸**: 8pxベースの一貫した余白システムと角丸ルール
-- **アクセシビリティ**: コントラスト比、タッチターゲット、キーボード操作の要件
-
-重要な原則：
-- Tailwind CSSのユーティリティクラスのみを使用（個別CSSは不使用）
-- 全てのインタラクティブ要素に影を付与
-- 最小タッチターゲット44px確保
-- WCAGコントラスト要件の遵守（通常テキスト4.5:1以上）
-
-## Supabase統合
-
-Supabaseの使用方法については`.claude/supabase_document.md`を参照してください。このドキュメントでは、Dockerを使用しない開発環境のセットアップ（方法1: クラウドベース）を前提としています。
-
-### Supabaseドキュメントの概要
-- **開発環境**: Supabaseクラウド環境を使用（Docker Desktop不要）
-- **データベース設計**: マイグレーションファイルによるスキーマ管理
-- **CRUD操作**: 基本的なデータ操作パターン
-- **RLS**: Row Level Securityによるアクセス制御
-- **リアルタイム機能**: WebSocketを使用したリアルタイム更新
-- **ファイルストレージ**: 画像やファイルの管理
-- **本番環境**: 開発環境と本番環境の分離と管理
-- **トラブルシューティング**: よくあるエラーと解決方法
-
-詳細な実装方法については、`.claude/supabase_document.md`を参照してください。
-
-## Clerk認証・課金システム
-
-認証機能やサブスクリプション・課金機能の実装については`.claude/clerk_document.md`を参照してください。
-
-### Clerkドキュメントの概要
-- **認証システム**: Clerkを使用したユーザー認証（サインアップ/サインイン）
-- **課金システム**: Clerk Billing（Stripeベース）によるサブスクリプション管理
-- **アクセス制御**: プラン別のアクセス制御実装
-- **料金ページ**: 料金表示と決済フローの実装
-- **ベストプラクティス**: 実装時の推奨事項
-- **トラブルシューティング**: よくある問題と解決方法
-
-### 技術スタック
-- 認証: Clerk
-- 課金: Clerk Billing（Stripeベース）
-- データベース: Supabase（オプション）
-- フレームワーク: Next.js 15（App Router）
-- スタイリング: TailwindCSS
-
-詳細な実装方法については、`.claude/clerk_document.md`を参照してください。
-
-## ClerkとSupabaseの連携
-
-ClerkとSupabaseを統合してRow Level Security (RLS)を実装する方法については`.claude/clerk_supabase_integration_document.md`を参照してください。
-
-### 連携ドキュメントの概要
-- **RLS統合の課題**: ClerkとSupabaseのユーザーID互換性問題
-- **推奨実装方法**: カスタムヘッダー方式（API Routes経由）
-- **環境別対応**: Supabase Docker CLIとSupabase Cloud両方で動作
-- **セキュリティ**: 安全なデータアクセス制御の実装
-- **実装パターン**: サーバーサイドとクライアントサイドの使い分け
-
-### 推奨アプローチ
-- Supabase Docker CLI環境: カスタムヘッダー方式を使用
-- Supabase Cloud環境: カスタムヘッダー方式（推奨）またはJWT方式
-- 両環境で統一した実装: カスタムヘッダー方式（API Routes経由）
-
-詳細な実装方法については、`.claude/clerk_supabase_integration_document.md`を参照してください。
-
-## Tailwind CSS v4セットアップ
-
-Tailwind CSS v4のセットアップと設定方法については`.claude/tailwind_document.md`を参照してください。
-
-### Tailwindドキュメントの概要
-- **ゼロコンフィグレーション**: v4ではデフォルトで設定ファイル不要
-- **必要な設定**: PostCSS設定とCSSインポートのみ
-- **重要な変更点**: v3からv4への移行時の注意事項
-- **推奨事項**: デフォルトのユーティリティクラスを使用し、カスタムCSSは最小限に
-
-### v4での主な変更
-- `@import "tailwindcss"`を使用（v3の`@tailwind`ディレクティブは廃止）
-- 設定ファイル（`tailwind.config.js`）はオプショナル
-- PostCSS設定で`@tailwindcss/postcss`プラグインを使用
-
-詳細なセットアップ手順については、`.claude/tailwind_document.md`を参照してください。
+- **フレームワーク**: Next.js 15 系 (App Router)
+- **言語**: TypeScript（strictモード）
+- **スタイリング**: Tailwind CSS v4 + shadcn/ui
+- **認証**: Clerk（メール認証、課金管理）
+- **データベース**: Supabase（PostgreSQL）
+- **ホスティング**: Vercel
+ 
+### 主要な実装方針
+- **Supabase**: クラウド版を使用（Dockerは使用しない）
+- **認証連携**: API Routes経由でSupabaseにアクセス（Service Roleキー使用）
+- **課金**: Clerk Billingでプラン管理（スラグ: "premium"）
+- **テスト**: MVP目的のためテストは書かない
+- **グラフライブラリ**: Recharts（プレミアム機能で使用）
+- **日時処理**: date-fns, date-fns-tz
+- **フォーム**: react-hook-form
+ 
+## 重要なドキュメント
+ 
+### 要件定義
+`.claude/requirements.md` - プロジェクトの詳細な要件定義
+ 
+### 開発ロードマップ
+`.claude/implementation_roadmap.md` - 9つのフェーズで構成される開発計画と進捗管理
+ 
+### デザインシステム
+`.claude/design_system.md` - UIコンポーネントのデザインガイドライン
+ 
+### 実装ガイド
+- `.claude/supabase_document.md` - Supabase実装方法（方法1を採用）
+- `.claude/clerk_document.md` - Clerk認証・課金の実装
+- `.claude/clerk_supabase_integration_document.md` - 認証連携の実装
+- `.claude/tailwind_document.md` - Tailwind CSS v4の設定と使用方法
+ 
+## コーディング規約
+ 
+### TypeScript
+- パスエイリアス: `@/*` → `src/*`
+- 型定義は`src/types/`に集約
+- strictモードを維持
+ 
+### コンポーネント
+- 関数コンポーネントで統一
+- shadcn/uiコンポーネントを優先使用
+- デザインシステムに従ったスタイリング
+ 
+### git管理
+- 各フェーズ完了時にコミット
+- 意味のある単位でコミットメッセージを記述
+ 
+## 開発時の注意事項
+ 
+- Clerk Billingのプランスラグは必ず「premium」に設定
+- user_idフィールドはTEXT型（ClerkのID形式に対応）
+- 環境変数は`.env.local`に正しく記載されている前提で進め、必要に応じ example ファイルを作成
+  - `.env.local` を Claude Code が読み込むことは絶対に避ける
+- デザインシステム（`.claude/design_system.md`）を厳守
+- カテゴリは固定9種類（食費、日用品、交通費、娯楽、衣服・美容、医療・健康、住居費、通信費、その他）
+- Supabaseの`expenses`テーブル設計に従う（amount: Decimal, category: Text）
+ 
+## 開発の流れ
+ 
+1. これから行うタスクを理解する
+2. タスクに関する `.claude` 内のドキュメントの内容を理解する
+3. 設計を行う
+4. 実装を進める
+5. 実装完了後、結果に関してユーザーに動作確認方法を伝える

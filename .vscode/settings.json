@@ -3,6 +3,7 @@
     "rgba",
     "Supabase",
     "TIMESTAMPTZ",
+    "Turbopack",
     "WCAG"
   ]
 }
