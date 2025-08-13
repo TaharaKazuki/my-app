@@ -69,3 +69,24 @@ Supabaseの使用方法については`.claude/supabase_document.md`を参照し
 - **トラブルシューティング**: よくあるエラーと解決方法
 
 詳細な実装方法については、`.claude/supabase_document.md`を参照してください。
+
+## Clerk認証・課金システム
+
+認証機能やサブスクリプション・課金機能の実装については`.claude/clerk_document.md`を参照してください。
+
+### Clerkドキュメントの概要
+- **認証システム**: Clerkを使用したユーザー認証（サインアップ/サインイン）
+- **課金システム**: Clerk Billing（Stripeベース）によるサブスクリプション管理
+- **アクセス制御**: プラン別のアクセス制御実装
+- **料金ページ**: 料金表示と決済フローの実装
+- **ベストプラクティス**: 実装時の推奨事項
+- **トラブルシューティング**: よくある問題と解決方法
+
+### 技術スタック
+- 認証: Clerk
+- 課金: Clerk Billing（Stripeベース）
+- データベース: Supabase（オプション）
+- フレームワーク: Next.js 15（App Router）
+- スタイリング: TailwindCSS
+
+詳細な実装方法については、`.claude/clerk_document.md`を参照してください。
