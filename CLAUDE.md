@@ -28,12 +28,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## 開発コマンド
  
 ```bash
-npm run dev      # 開発サーバー起動（Turbopack使用）
+npm run dev      # 開発サーバー起動（Turbopack使用、http://localhost:3000）
 npm run build    # プロダクションビルド
 npm start        # プロダクションサーバー起動
 npm run lint     # ESLint実行
 npx tsc --noEmit # TypeScript型チェック
-npm install      # パッケージインストール
+
+# Supabase関連
+supabase start   # ローカルSupabase起動（Docker使用時のみ）
+supabase stop    # ローカルSupabase停止（Docker使用時のみ）
+# マイグレーション実行はSupabaseダッシュボードのSQL Editorで手動実行
+
+# shadcn/ui コンポーネント追加
+npx shadcn@latest add [component-name]
 ```
  
 ## 環境設定
@@ -86,11 +93,16 @@ my-app/
 ## アーキテクチャ
  
 ### 技術スタック
-- **フレームワーク**: Next.js 15 系 (App Router)
-- **言語**: TypeScript（strictモード）
+- **フレームワーク**: Next.js 15.4.6 (App Router)
+- **React**: 19.1.0
+- **言語**: TypeScript 5.x（strictモード）
 - **スタイリング**: Tailwind CSS v4 + shadcn/ui
-- **認証**: Clerk（メール認証、課金管理）
+- **認証**: Clerk（メール認証、課金管理）+ 日本語ローカライズ
 - **データベース**: Supabase（PostgreSQL）
+- **フォームバリデーション**: react-hook-form + zod
+- **日付処理**: date-fns（日本語ロケール使用）
+- **通知**: Sonner
+- **グラフ**: Recharts（プレミアム機能用）
 - **ホスティング**: Vercel
  
 ### 主要な実装方針
