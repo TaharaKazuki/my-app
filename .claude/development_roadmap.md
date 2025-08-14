@@ -24,11 +24,11 @@
   - [x] サインイン/サインアップページ（/sign-in, /sign-up）
   - [x] エラーハンドリング実装（error.tsx, not-found.tsx, global-error.tsx）
  
-- [ ] **データベース設計**
-  - Supabaseテーブル作成（users, expenses, categories）
-  - RLSポリシー設定
-  - カテゴリマスタデータ投入
-  - 型定義ファイル作成
+- [x] **データベース設計**
+  - [x] Supabaseテーブル作成（users, expenses, categories）
+  - [x] RLSポリシー設定
+  - [x] カテゴリマスタデータ投入
+  - [x] 型定義ファイル作成
  
 - [x] **共通コンポーネント**
   - [x] レイアウト（ヘッダー、認証/ダッシュボードレイアウト）

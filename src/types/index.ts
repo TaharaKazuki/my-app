@@ -9,11 +9,22 @@ export type ExpenseCategory =
   | '通信費'
   | 'その他'
 
+export interface Category {
+  id: number
+  name: ExpenseCategory
+  slug: string
+  icon: string
+  order_index: number
+  created_at: string
+}
+
 export interface Expense {
   id: string
   user_id: string
+  category_id: number
   amount: number
-  category: ExpenseCategory
+  description?: string
+  date: string
   created_at: string
   updated_at: string
 }
@@ -22,6 +33,7 @@ export interface User {
   id: string
   email: string
   created_at: string
+  updated_at: string
 }
 
 export type PlanType = 'free' | 'premium'
