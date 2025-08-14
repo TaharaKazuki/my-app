@@ -1,6 +1,18 @@
-import { ExpenseCategory } from '@/types'
+import { ExpenseCategory, Category } from '@/types'
 
-export const EXPENSE_CATEGORIES: ExpenseCategory[] = [
+export const EXPENSE_CATEGORIES: Array<Pick<Category, 'id' | 'name' | 'icon' | 'slug'>> = [
+  { id: 1, name: '食費', slug: 'food', icon: '🍔' },
+  { id: 2, name: '日用品', slug: 'daily-needs', icon: '🛍️' },
+  { id: 3, name: '交通費', slug: 'transportation', icon: '🚗' },
+  { id: 4, name: '娯楽', slug: 'entertainment', icon: '🎉' },
+  { id: 5, name: '衣服・美容', slug: 'clothing-beauty', icon: '👔' },
+  { id: 6, name: '医療・健康', slug: 'health', icon: '🏥' },
+  { id: 7, name: '住居費', slug: 'housing', icon: '🏠' },
+  { id: 8, name: '通信費', slug: 'communication', icon: '📱' },
+  { id: 9, name: 'その他', slug: 'other', icon: '💡' },
+]
+
+export const EXPENSE_CATEGORY_NAMES: ExpenseCategory[] = [
   '食費',
   '日用品',
   '交通費',
@@ -25,13 +37,23 @@ export const CATEGORY_COLORS: Record<ExpenseCategory, string> = {
 }
 
 export const CATEGORY_ICONS: Record<ExpenseCategory, string> = {
-  '食費': 'utensils',
-  '日用品': 'shopping-bag',
-  '交通費': 'train',
-  '娯楽': 'gamepad-2',
-  '衣服・美容': 'shirt',
-  '医療・健康': 'heart-pulse',
-  '住居費': 'home',
-  '通信費': 'wifi',
-  'その他': 'more-horizontal',
+  '食費': '🍔',
+  '日用品': '🛍️',
+  '交通費': '🚗',
+  '娯楽': '🎉',
+  '衣服・美容': '👔',
+  '医療・健康': '🏥',
+  '住居費': '🏠',
+  '通信費': '📱',
+  'その他': '💡',
+}
+
+// カテゴリをIDで検索するヘルパー関数
+export function getCategoryById(id: number): Pick<Category, 'id' | 'name' | 'icon' | 'slug'> | undefined {
+  return EXPENSE_CATEGORIES.find(category => category.id === id)
+}
+
+// カテゴリを名前で検索するヘルパー関数  
+export function getCategoryByName(name: ExpenseCategory): Pick<Category, 'id' | 'name' | 'icon' | 'slug'> | undefined {
+  return EXPENSE_CATEGORIES.find(category => category.name === name)
 }

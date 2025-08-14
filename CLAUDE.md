@@ -56,9 +56,7 @@ NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
 NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
 NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL=/dashboard
 NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL=/dashboard
- 
-# Billing Portal URL
-NEXT_PUBLIC_BILLING_URL=https://accounts.your-domain.com/user
+
 ```
  
 ## プロジェクト構造
