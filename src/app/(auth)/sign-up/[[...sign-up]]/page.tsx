@@ -2,14 +2,14 @@ import { SignUp } from '@clerk/nextjs'
 
 export default function SignUpPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-white">
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-gradient-to-br from-blue-50 to-white py-12">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Money Tracker
+            アカウント作成
           </h1>
           <p className="text-gray-600">
-            アカウントを作成して始めましょう
+            無料でMoney Trackerを始めましょう
           </p>
         </div>
         <SignUp

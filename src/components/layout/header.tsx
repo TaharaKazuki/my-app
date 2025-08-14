@@ -10,8 +10,6 @@ export function Header() {
   const pathname = usePathname()
   const isAuthPage = pathname?.startsWith('/sign-in') || pathname?.startsWith('/sign-up')
 
-  if (isAuthPage) return null
-
   return (
     <header className="bg-white border-b border-gray-200">
       <div className="container mx-auto px-4">
