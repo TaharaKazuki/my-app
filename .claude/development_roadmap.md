@@ -32,12 +32,15 @@
  
 - [x] **共通コンポーネント**
   - [x] レイアウト（ヘッダー、認証/ダッシュボードレイアウト）
-  - [x] UIコンポーネント（Button, Card, Input, Label, Dialog, Select, Tabs, Sonner追加済み）
-  - [x] 型定義ファイル（/src/types/index.ts作成済み）
+  - [x] UIコンポーネント（Button, Card, Input, Label, Dialog, Select, Tabs, Alert, Badge, Avatar, Progress, Separator, Switch, Textarea, Sonner追加済み）
+  - [x] 型定義ファイル（/src/types/index.ts作成済み、slug/icon/order_index追加）
   - [x] ユーティリティ関数（通貨フォーマット、数値フォーマット）
   - [x] カテゴリ定数とアイコン定義（/src/lib/constants.ts）
   - [x] Supabaseクライアント設定（/src/lib/supabase.ts）
-  - [x] エラーバウンダリー（error.tsx, not-found.tsx, global-error.tsx）
+  - [x] エラーバウンダリー（error.tsx強化、ErrorBoundaryコンポーネント追加）
+  - [x] ローディング状態（Loading, LoadingSpinner, LoadingPage, LoadingCard, LoadingButton）
+  - [x] スケルトンローディング（Skeleton, ExpenseItemSkeleton, ExpenseListSkeleton等）
+  - [x] UIコンポーネントインデックス（/src/components/ui/index.ts）
   - [x] トップページ（ランディングページ）
   - [x] ダッシュボードページ（基本実装）
  

@@ -32,6 +32,7 @@ npm run dev      # 開発サーバー起動（Turbopack使用）
 npm run build    # プロダクションビルド
 npm start        # プロダクションサーバー起動
 npm run lint     # ESLint実行
+npx tsc --noEmit # TypeScript型チェック
 npm install      # パッケージインストール
 ```
  
@@ -99,6 +100,7 @@ my-app/
 - **認証連携**: API Routes経由でSupabaseにアクセス（Service Roleキー使用）
 - **課金**: Clerk Billingでプラン管理（スラグ: "premium"）
 - **テスト**: MVP目的のためテストは書かない
+- **品質管理**: タスク完了前に必ずlintと型のチェックを実行
 - **グラフライブラリ**: Recharts（プレミアム機能で使用）
 - **日時処理**: date-fns, date-fns-tz
 - **フォーム**: react-hook-form
