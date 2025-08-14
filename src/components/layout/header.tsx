@@ -1,15 +1,12 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import { UserButton, SignedIn, SignedOut } from '@clerk/nextjs'
 import { Button } from '@/components/ui/button'
 import { Wallet } from 'lucide-react'
 
 export function Header() {
-  const pathname = usePathname()
-  const isAuthPage = pathname?.startsWith('/sign-in') || pathname?.startsWith('/sign-up')
-
+  
   return (
     <header className="bg-white border-b border-gray-200">
       <div className="container mx-auto px-4">
