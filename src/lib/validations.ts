@@ -52,6 +52,21 @@ export function transformExpenseFormData(data: ExpenseFormData) {
   }
 }
 
+// API用のバリデーションスキーマ（変換後のデータ用）
+export const expenseSubmitSchema = z.object({
+  amount: z.number().positive("金額は正の数値である必要があります").max(9999999.99, "金額は999万円以下である必要があります"),
+  category_id: z.number().int().min(1, "カテゴリIDは1以上である必要があります").max(9, "カテゴリIDは9以下である必要があります"),
+  description: z.string().nullable().optional(),
+  date: z.string().refine((dateString) => {
+    const date = new Date(dateString)
+    const today = new Date()
+    const oneYearAgo = new Date()
+    oneYearAgo.setFullYear(today.getFullYear() - 1)
+    
+    return date <= today && date >= oneYearAgo
+  }, "日付は今日から1年前の範囲で選択してください")
+})
+
 // カテゴリバリデーション
 export const categorySchema = z.object({
   id: z.number().min(1).max(9),

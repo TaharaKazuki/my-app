@@ -57,13 +57,18 @@
   - [x] 成功/エラートースト
   - [x] リアルタイムフィードバック
  
-- [ ] **API Routes**
-  - POST /api/expenses（作成）
-  - GET /api/expenses（一覧取得）
-  - PUT /api/expenses/[id]（更新）
-  - DELETE /api/expenses/[id]（削除）
-  - エラーハンドリング
-  - Clerk認証チェック
+- [x] **API Routes**
+  - [x] POST /api/expenses（作成）
+  - [x] GET /api/expenses（一覧取得）
+  - [x] PUT /api/expenses/[id]（更新）
+  - [x] DELETE /api/expenses/[id]（削除）
+  - [x] GET /api/expenses/[id]（詳細取得）
+  - [x] エラーハンドリング
+  - [x] Clerk認証チェック
+  - [x] ページネーション対応
+  - [x] UUIDバリデーション
+  - [x] zodによるリクエストバリデーション
+  - [x] フロントエンドAPI関数（/src/lib/api.ts）
  
 - [ ] **支出一覧・管理**
   - 支出履歴表示（日付降順）

@@ -13,3 +13,13 @@ export interface ExpenseData extends ExpenseSubmitData {
   created_at: string
   updated_at: string
 }
+
+// カテゴリ情報を含む支出データ
+export interface ExpenseWithCategory extends ExpenseData {
+  categories: {
+    id: number
+    name: string
+    slug: string
+    icon: string
+  }
+}
