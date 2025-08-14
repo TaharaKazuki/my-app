@@ -111,9 +111,6 @@ my-app/
 - **課金**: Clerk Billingでプラン管理（スラグ: "premium"）
 - **テスト**: MVP目的のためテストは書かない
 - **品質管理**: タスク完了前に必ずlintと型のチェックを実行
-- **グラフライブラリ**: Recharts（プレミアム機能で使用）
-- **日時処理**: date-fns, date-fns-tz
-- **フォーム**: react-hook-form
  
 ## 重要なドキュメント
  
