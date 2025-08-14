@@ -145,6 +145,41 @@ my-app/
 - 各フェーズ完了時にコミット
 - 意味のある単位でコミットメッセージを記述
  
+## データベース設計
+
+### テーブル構造
+```sql
+-- users: Clerkユーザー情報
+users (
+  id TEXT PRIMARY KEY,  -- Clerk user ID
+  email TEXT NOT NULL,
+  created_at TIMESTAMP,
+  updated_at TIMESTAMP
+)
+
+-- categories: 支出カテゴリ（マスタデータ）
+categories (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL UNIQUE,
+  slug TEXT NOT NULL UNIQUE,  -- URLフレンドリーな識別子
+  icon TEXT NOT NULL,         -- 絵文字アイコン
+  order_index INTEGER,        -- 表示順
+  created_at TIMESTAMP
+)
+
+-- expenses: 支出記録
+expenses (
+  id UUID PRIMARY KEY,
+  user_id TEXT REFERENCES users(id),
+  category_id INTEGER REFERENCES categories(id),
+  amount DECIMAL(10,2),  -- 最大999万円まで
+  description TEXT,       -- 任意のメモ
+  date DATE,             -- 支出日
+  created_at TIMESTAMP,
+  updated_at TIMESTAMP
+)
+```
+
 ## 開発時の注意事項
  
 - Clerk Billingのプランスラグは必ず「premium」に設定
@@ -153,12 +188,29 @@ my-app/
   - `.env.local` を Claude Code が読み込むことは絶対に避ける
 - デザインシステム（`.claude/design_system.md`）を厳守
 - カテゴリは固定9種類（食費、日用品、交通費、娯楽、衣服・美容、医療・健康、住居費、通信費、その他）
-- Supabaseの`expenses`テーブル設計に従う（amount: Decimal, category: Text）
+- 日付選択はshadcn/uiのCalendarコンポーネント使用（locale={ja}で日本語化）
+- フォーム送信前に必ずzodでバリデーション実行
  
+## 現在の実装状況
+
+### 完了済みフェーズ
+- ✅ **フェーズ1**: 基盤とコア機能（環境構築、認証システム、データベース設計、共通コンポーネント）
+- 🚧 **フェーズ2**: 支出管理機能（支出記録フォーム完了、API Routes未実装）
+
+### 主要コンポーネント実装状況
+- ✅ 認証: Clerk統合（日本語化済み）、サインイン/サインアップページ
+- ✅ フォーム: 支出記録フォーム（金額、カテゴリ、日付、説明）
+- ✅ UI: shadcn/uiコンポーネント一式、ローディング状態、スケルトン
+- ✅ バリデーション: zodスキーマ定義済み
+- ⏳ API: 支出CRUD操作（未実装）
+- ⏳ ダッシュボード: サマリー表示（未実装）
+
 ## 開発の流れ
  
 1. これから行うタスクを理解する
 2. タスクに関する `.claude` 内のドキュメントの内容を理解する
-3. 設計を行う
-4. 実装を進める
-5. 実装完了後、結果に関してユーザーに動作確認方法を伝える
+3. TodoWriteツールでタスク管理（複雑なタスクの場合）
+4. 設計を行う
+5. 実装を進める
+6. lint と型チェックを実行
+7. 実装完了後、結果に関してユーザーに動作確認方法を伝える
