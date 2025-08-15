@@ -48,8 +48,9 @@ export async function POST(request: NextRequest) {
     if (!existingUser) {
       // ユーザーが存在しない場合は作成
       try {
-        const user = await clerkClient.users.getUser(userId)
-        const email = user.emailAddresses.find(email => email.id === user.primaryEmailAddressId)?.emailAddress || 'unknown@example.com'
+        const clerk = await clerkClient()
+        const user = await clerk.users.getUser(userId)
+        const email = user.emailAddresses.find(emailItem => emailItem.id === user.primaryEmailAddressId)?.emailAddress || 'unknown@example.com'
         
         const { error: userError } = await supabase
           .from('users')

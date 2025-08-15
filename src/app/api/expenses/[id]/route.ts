@@ -69,7 +69,7 @@ export async function PUT(
       )
     }
 
-    // 支出記録の更新
+    // 支出記録の更新（カテゴリ情報も含めて取得）
     const { data, error } = await supabase
       .from('expenses')
       .update({
@@ -81,7 +81,15 @@ export async function PUT(
       })
       .eq('id', expenseId)
       .eq('user_id', userId)
-      .select('*')
+      .select(`
+        *,
+        categories (
+          id,
+          name,
+          slug,
+          icon
+        )
+      `)
       .single()
 
     if (error) {

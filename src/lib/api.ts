@@ -5,11 +5,11 @@ const API_BASE_URL = '/api'
 // APIエラーレスポンスの型
 interface ApiError {
   error: string
-  details?: any
+  details?: unknown
 }
 
 // APIレスポンスの型
-interface ApiResponse<T = any> {
+interface ApiResponse<T = unknown> {
   data?: T
   message?: string
   pagination?: {
@@ -22,7 +22,7 @@ interface ApiResponse<T = any> {
 
 // カスタムエラークラス
 export class ApiRequestError extends Error {
-  constructor(public status: number, message: string, public details?: any) {
+  constructor(public status: number, message: string, public details?: unknown) {
     super(message)
     this.name = 'ApiRequestError'
   }
@@ -67,7 +67,7 @@ export const expenseApi = {
   async getAll(params?: {
     page?: number
     limit?: number
-  }): Promise<{ data: ExpenseWithCategory[]; pagination: any }> {
+  }): Promise<{ data: ExpenseWithCategory[]; pagination: ApiResponse['pagination'] }> {
     const searchParams = new URLSearchParams()
     if (params?.page) searchParams.set('page', params.page.toString())
     if (params?.limit) searchParams.set('limit', params.limit.toString())
@@ -88,10 +88,18 @@ export const expenseApi = {
   },
 
   // 支出更新
-  async update(id: string, expenseData: ExpenseSubmitData): Promise<ExpenseData> {
-    const response = await apiRequest<ApiResponse<ExpenseData>>(`/expenses/${id}`, {
+  async update(id: string, expenseData: ExpenseSubmitData): Promise<ExpenseWithCategory> {
+    // APIは文字列型を期待しているので変換
+    const formData = {
+      amount: expenseData.amount.toString(),
+      category_id: expenseData.category_id.toString(),
+      description: expenseData.description || '',
+      date: expenseData.date
+    }
+    
+    const response = await apiRequest<ApiResponse<ExpenseWithCategory>>(`/expenses/${id}`, {
       method: 'PUT',
-      body: JSON.stringify(expenseData),
+      body: JSON.stringify(formData),
     })
     return response.data!
   },
@@ -103,6 +111,10 @@ export const expenseApi = {
     })
   },
 }
+
+// エクスポート用のヘルパー関数
+export const updateExpense = expenseApi.update
+export const deleteExpense = expenseApi.delete
 
 // 統計API（将来の実装用）
 export const statsApi = {
