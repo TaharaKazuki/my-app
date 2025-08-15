@@ -6,6 +6,7 @@ import { ExpenseForm } from '@/components/forms/expense-form'
 import { ExpenseManager } from '@/components/expense-manager'
 import { formatCurrency } from '@/lib/utils'
 import { expenseApi } from '@/lib/api'
+import { DashboardCardSkeleton, FormSkeleton } from '@/components/ui/skeleton'
 import type { ExpenseSubmitData, ExpenseWithCategory } from '@/types/expense'
 
 interface DashboardClientProps {
@@ -43,7 +44,7 @@ export function DashboardClient({ }: DashboardClientProps) {
   const handleExpenseSubmit = async (data: ExpenseSubmitData) => {
     setIsSubmitting(true)
     try {
-      const result = await expenseApi.create(data)
+      await expenseApi.create(data)
       
       // 支出一覧を再取得して最新の状態に更新
       await fetchExpenses()
@@ -83,49 +84,72 @@ export function DashboardClient({ }: DashboardClientProps) {
   const summary = calculateSummary()
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">ダッシュボード</h1>
+    <div className="container mx-auto px-4 py-4 lg:py-8 max-w-7xl">
+      <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-6 lg:mb-8">ダッシュボード</h1>
       
-      <div className="grid gap-6 lg:grid-cols-12">
+      {/* モバイル: 縦並び, デスクトップ: 横並び */}
+      <div className="flex flex-col lg:grid lg:grid-cols-12 gap-6">
         {/* 支出記録フォーム */}
-        <div className="lg:col-span-4">
-          <ExpenseForm 
-            onSubmit={handleExpenseSubmit}
-            isLoading={isSubmitting}
-          />
+        <div className="lg:col-span-4 order-2 lg:order-1">
+          {!isMounted ? (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <div className="h-5 w-5 bg-blue-600 rounded" />
+                  支出を記録
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <FormSkeleton />
+              </CardContent>
+            </Card>
+          ) : (
+            <ExpenseForm 
+              onSubmit={handleExpenseSubmit}
+              isLoading={isSubmitting}
+            />
+          )}
         </div>
 
         {/* サマリーカードと支出履歴 */}
-        <div className="lg:col-span-8 space-y-6">
+        <div className="lg:col-span-8 space-y-6 order-1 lg:order-2">
           {/* サマリーカード */}
-          <div className="grid gap-4 md:grid-cols-3">
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground">今週の支出</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-2xl font-bold">{formatCurrency(summary.weeklyTotal)}</p>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground">今月の支出</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-2xl font-bold">{formatCurrency(summary.monthlyTotal)}</p>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground">登録件数</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-2xl font-bold">{summary.totalCount}件</p>
-              </CardContent>
-            </Card>
-          </div>
+          {!isMounted || isLoading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {[...Array(3)].map((_, i) => (
+                <DashboardCardSkeleton key={i} />
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <Card className="shadow-sm">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">今週の支出</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-xl lg:text-2xl font-bold">{formatCurrency(summary.weeklyTotal)}</p>
+                </CardContent>
+              </Card>
+              
+              <Card className="shadow-sm">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">今月の支出</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-xl lg:text-2xl font-bold">{formatCurrency(summary.monthlyTotal)}</p>
+                </CardContent>
+              </Card>
+              
+              <Card className="shadow-sm">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">登録件数</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-xl lg:text-2xl font-bold">{summary.totalCount}件</p>
+                </CardContent>
+              </Card>
+            </div>
+          )}
           
           {/* 支出履歴 - ExpenseManagerコンポーネントを使用 */}
           {isMounted && (

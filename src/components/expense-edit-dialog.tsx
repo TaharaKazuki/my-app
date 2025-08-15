@@ -91,7 +91,7 @@ export function ExpenseEditDialog({
       await onSubmit(data)
       onOpenChange(false)
       form.reset()
-    } catch (error) {
+    } catch {
       // エラーハンドリングは親コンポーネントで行う
     }
   }

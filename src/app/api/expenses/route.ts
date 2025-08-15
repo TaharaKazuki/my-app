@@ -145,7 +145,7 @@ export async function GET(request: NextRequest) {
     const supabase = getSupabaseServerClient(userId)
 
     // 支出一覧の取得（カテゴリ情報も含む）
-    const { data, error, count } = await supabase
+    const { data, error } = await supabase
       .from('expenses')
       .select(`
         *,

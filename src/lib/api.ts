@@ -2,11 +2,11 @@ import type { ExpenseSubmitData, ExpenseData, ExpenseWithCategory } from '@/type
 
 const API_BASE_URL = '/api'
 
-// APIエラーレスポンスの型
-interface ApiError {
-  error: string
-  details?: unknown
-}
+// APIエラーレスポンスの型（将来の拡張用に保持）
+// interface ApiError {
+//   error: string
+//   details?: unknown
+// }
 
 // APIレスポンスの型
 interface ApiResponse<T = unknown> {
