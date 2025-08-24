@@ -1,12 +1,15 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import { ExpenseForm } from '@/components/forms/expense-form'
 import { ExpenseManager } from '@/components/expense-manager'
 import { formatCurrency } from '@/lib/utils'
 import { expenseApi } from '@/lib/api'
 import { DashboardCardSkeleton, FormSkeleton } from '@/components/ui/skeleton'
+import { ArrowRight } from 'lucide-react'
 import type { ExpenseSubmitData, ExpenseWithCategory } from '@/types/expense'
 
 interface DashboardClientProps {
@@ -153,10 +156,20 @@ export function DashboardClient({ }: DashboardClientProps) {
           
           {/* 支出履歴 - ExpenseManagerコンポーネントを使用 */}
           {isMounted && (
-            <ExpenseManager 
-              initialExpenses={expenses}
-              isLoading={isLoading}
-            />
+            <>
+              <ExpenseManager 
+                initialExpenses={expenses}
+                isLoading={isLoading}
+              />
+              <div className="flex justify-center mt-6">
+                <Link href="/expenses">
+                  <Button variant="outline" className="group">
+                    すべての支出履歴を見る
+                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </Button>
+                </Link>
+              </div>
+            </>
           )}
         </div>
       </div>

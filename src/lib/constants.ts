@@ -1,5 +1,17 @@
 import { ExpenseCategory, Category } from '@/types'
 
+export const categories = [
+  { id: 1, name: '食費', slug: 'food', icon: '🍔' },
+  { id: 2, name: '日用品', slug: 'daily-needs', icon: '🛍️' },
+  { id: 3, name: '交通費', slug: 'transportation', icon: '🚗' },
+  { id: 4, name: '娯楽', slug: 'entertainment', icon: '🎉' },
+  { id: 5, name: '衣服・美容', slug: 'clothing-beauty', icon: '👔' },
+  { id: 6, name: '医療・健康', slug: 'health', icon: '🏥' },
+  { id: 7, name: '住居費', slug: 'housing', icon: '🏠' },
+  { id: 8, name: '通信費', slug: 'communication', icon: '📱' },
+  { id: 9, name: 'その他', slug: 'other', icon: '💡' },
+]
+
 export const EXPENSE_CATEGORIES: Array<Pick<Category, 'id' | 'name' | 'icon' | 'slug'>> = [
   { id: 1, name: '食費', slug: 'food', icon: '🍔' },
   { id: 2, name: '日用品', slug: 'daily-needs', icon: '🛍️' },

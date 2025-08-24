@@ -23,6 +23,11 @@ export function Header() {
                   ダッシュボード
                 </Button>
               </Link>
+              <Link href="/expenses">
+                <Button variant="ghost" className="rounded-lg">
+                  支出履歴
+                </Button>
+              </Link>
               <UserButton
                 appearance={{
                   elements: {

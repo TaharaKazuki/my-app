@@ -140,12 +140,15 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1')
     const limit = Math.min(parseInt(searchParams.get('limit') || '20'), 100) // 最大100件
     const offset = (page - 1) * limit
+    const category = searchParams.get('category')
+    const from = searchParams.get('from')
+    const to = searchParams.get('to')
 
     // Supabaseクライアント取得
     const supabase = getSupabaseServerClient(userId)
 
-    // 支出一覧の取得（カテゴリ情報も含む）
-    const { data, error } = await supabase
+    // クエリビルダーの構築
+    let query = supabase
       .from('expenses')
       .select(`
         *,
@@ -157,6 +160,22 @@ export async function GET(request: NextRequest) {
         )
       `)
       .eq('user_id', userId)
+
+    // カテゴリフィルタ
+    if (category && category !== 'all') {
+      query = query.eq('category_id', parseInt(category))
+    }
+
+    // 日付範囲フィルタ
+    if (from) {
+      query = query.gte('date', from)
+    }
+    if (to) {
+      query = query.lte('date', to)
+    }
+
+    // ソートとページネーション
+    const { data, error } = await query
       .order('date', { ascending: false })
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1)
@@ -170,11 +189,26 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // 件数取得
-    const { count: totalCount, error: countError } = await supabase
+    // 件数取得（フィルタを適用）
+    let countQuery = supabase
       .from('expenses')
       .select('*', { count: 'exact', head: true })
       .eq('user_id', userId)
+
+    // カテゴリフィルタ
+    if (category && category !== 'all') {
+      countQuery = countQuery.eq('category_id', parseInt(category))
+    }
+
+    // 日付範囲フィルタ
+    if (from) {
+      countQuery = countQuery.gte('date', from)
+    }
+    if (to) {
+      countQuery = countQuery.lte('date', to)
+    }
+
+    const { count: totalCount, error: countError } = await countQuery
 
     if (countError) {
       console.error('Count error:', countError)

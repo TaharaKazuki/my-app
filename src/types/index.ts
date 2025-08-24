@@ -29,6 +29,15 @@ export interface Expense {
   updated_at: string
 }
 
+export interface ExpenseWithCategory extends Expense {
+  categories?: {
+    id: number
+    name: string
+    slug: string
+    icon: string
+  }
+}
+
 export interface User {
   id: string
   email: string
