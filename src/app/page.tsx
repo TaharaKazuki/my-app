@@ -156,9 +156,9 @@ export default async function HomePage() {
                     <span>支出トレンド分析</span>
                   </li>
                 </ul>
-                <Link href="/sign-up" className="block">
+                <Link href="/pricing" className="block">
                   <Button className="w-full bg-white text-blue-700 hover:bg-blue-50 rounded-xl py-3 font-semibold shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200">
-                    プレミアムで始める
+                    プレミアムプランを見る
                   </Button>
                 </Link>
               </div>

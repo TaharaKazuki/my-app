@@ -105,11 +105,11 @@
 Clerk Billingとグラフ機能を実装します。
  
 #### 実装内容
-- [ ] **Clerk Billing設定**
-  - Clerkダッシュボードでプラン作成（スラグ: premium）
-  - Stripe連携
-  - 料金ページにPricingTable実装
-  - has()関数での権限チェック
+- [x] **Clerk Billing設定**
+  - [x] Clerkダッシュボードでプラン作成（スラグ: premium）※ユーザーが設定済み
+  - [x] Stripe連携 ※ユーザーが設定済み
+  - [x] 料金ページにPricingTable実装
+  - [x] has()関数での権限チェック
  
 - [ ] **プレミアム分析機能**
   - Rechartsセットアップ
@@ -117,7 +117,7 @@ Clerk Billingとグラフ機能を実装します。
   - 棒グラフ（カテゴリ別金額）
   - 期間切り替え（日次/週次/月次）
   - 前期間比較
-  - Protectコンポーネントで保護
+  - [x] Protectコンポーネントで保護
  
 - [ ] **プレミアムUI**
   - グラデーション背景
