@@ -10,8 +10,8 @@ import { useState } from 'react'
 export function PremiumBanner() {
   const { has } = useAuth()
   const [isDismissed, setIsDismissed] = useState(false)
-  // Clerkのhas関数が利用可能な場合は使用、そうでなければfalse
-  const isPremium = false // 一旦falseに設定（Clerk Billingの設定完了後に有効化）
+  // Clerkのhas関数でプレミアムプランをチェック
+  const isPremium = has && has({ plan: 'premium' })
 
   // プレミアムユーザーまたは非表示の場合は何も表示しない
   if (isPremium || isDismissed) {

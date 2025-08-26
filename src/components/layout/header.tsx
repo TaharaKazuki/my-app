@@ -1,14 +1,14 @@
 'use client'
 
 import Link from 'next/link'
-import { UserButton, SignedIn, SignedOut } from '@clerk/nextjs'
+import { UserButton, SignedIn, SignedOut, useAuth } from '@clerk/nextjs'
 import { Button } from '@/components/ui/button'
 import { Wallet, Crown } from 'lucide-react'
 
 export function Header() {
-  
-  // 一旦プレミアムチェックを無効化（Clerk Billingの設定完了後に有効化）
-  const isPremium = false
+  const { has } = useAuth()
+  // Clerkのhas関数でプレミアムプランをチェック
+  const isPremium = has && has({ plan: 'premium' })
   
   return (
     <header className="bg-white border-b border-gray-200">
