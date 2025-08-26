@@ -1,5 +1,4 @@
 import { auth } from '@clerk/nextjs/server'
-import { currentUser } from '@clerk/nextjs/server'
 
 /**
  * ユーザーがプレミアムプランに加入しているかチェック

@@ -67,10 +67,16 @@ export const expenseApi = {
   async getAll(params?: {
     page?: number
     limit?: number
+    date_from?: string
+    date_to?: string
+    category?: string
   }): Promise<{ data: ExpenseWithCategory[]; pagination: ApiResponse['pagination'] }> {
     const searchParams = new URLSearchParams()
     if (params?.page) searchParams.set('page', params.page.toString())
     if (params?.limit) searchParams.set('limit', params.limit.toString())
+    if (params?.date_from) searchParams.set('date_from', params.date_from)
+    if (params?.date_to) searchParams.set('date_to', params.date_to)
+    if (params?.category) searchParams.set('category', params.category)
     
     const endpoint = `/expenses${searchParams.toString() ? `?${searchParams.toString()}` : ''}`
     const response = await apiRequest<ApiResponse<ExpenseWithCategory[]>>(endpoint)

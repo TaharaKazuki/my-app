@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { UserButton, SignedIn, SignedOut, useAuth } from '@clerk/nextjs'
 import { Button } from '@/components/ui/button'
-import { Wallet, Crown } from 'lucide-react'
+import { Wallet, Crown, ChartBar } from 'lucide-react'
 
 export function Header() {
   const { has } = useAuth()
@@ -31,6 +31,17 @@ export function Header() {
                   支出履歴
                 </Button>
               </Link>
+              {isPremium && (
+                <Link href="/analytics">
+                  <Button 
+                    variant="ghost" 
+                    className="rounded-lg text-amber-600 hover:bg-amber-50"
+                  >
+                    <ChartBar className="h-4 w-4 mr-2" />
+                    分析
+                  </Button>
+                </Link>
+              )}
               {!isPremium && (
                 <Link href="/pricing">
                   <Button 

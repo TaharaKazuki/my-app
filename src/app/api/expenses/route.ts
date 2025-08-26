@@ -141,8 +141,8 @@ export async function GET(request: NextRequest) {
     const limit = Math.min(parseInt(searchParams.get('limit') || '20'), 100) // 最大100件
     const offset = (page - 1) * limit
     const category = searchParams.get('category')
-    const from = searchParams.get('from')
-    const to = searchParams.get('to')
+    const from = searchParams.get('date_from') || searchParams.get('from')
+    const to = searchParams.get('date_to') || searchParams.get('to')
 
     // Supabaseクライアント取得
     const supabase = getSupabaseServerClient(userId)

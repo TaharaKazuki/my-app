@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { ExpenseForm } from '@/components/forms/expense-form'
 import { ExpenseManager } from '@/components/expense-manager'
 import { PremiumBanner } from '@/components/premium-banner'
+import { PlanStatusBadge } from '@/components/plan-status-badge'
 import { formatCurrency } from '@/lib/utils'
 import { expenseApi } from '@/lib/api'
 import { DashboardCardSkeleton, FormSkeleton } from '@/components/ui/skeleton'
@@ -90,6 +91,9 @@ export function DashboardClient({ }: DashboardClientProps) {
   return (
     <div className="container mx-auto px-4 py-4 lg:py-8 max-w-7xl">
       <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-6 lg:mb-8">ダッシュボード</h1>
+      
+      {/* プラン状態の表示 */}
+      <PlanStatusBadge />
       
       {/* プレミアムプランへのアップグレードバナー */}
       <PremiumBanner />
