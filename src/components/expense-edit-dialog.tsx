@@ -41,10 +41,8 @@ import { cn, formatCurrency } from '@/lib/utils'
 import { EXPENSE_CATEGORIES } from '@/lib/constants'
 import { expenseSchema } from '@/lib/validations/expense'
 import type { ExpenseWithCategory } from '@/types/expense'
-import type { z } from 'zod'
 import { ja } from 'date-fns/locale'
-
-type ExpenseFormData = z.infer<typeof expenseSchema>
+import type { ExpenseFormData } from '@/lib/validations/expense'
 
 interface ExpenseEditDialogProps {
   expense: ExpenseWithCategory | null
@@ -61,8 +59,9 @@ export function ExpenseEditDialog({
 }: ExpenseEditDialogProps) {
   const [isMounted, setIsMounted] = useState(false)
   
-  const form = useForm<ExpenseFormData>({
-    resolver: zodResolver(expenseSchema),
+  const form = useForm({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolver: zodResolver(expenseSchema) as any,
     defaultValues: {
       amount: 0,
       category_id: 1,

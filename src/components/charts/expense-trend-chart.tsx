@@ -1,20 +1,18 @@
 'use client'
 
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
-import { categories } from '@/lib/constants'
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { formatCurrency } from '@/lib/utils'
 import { format, startOfDay, endOfDay, eachDayOfInterval, eachWeekOfInterval, eachMonthOfInterval, startOfWeek, endOfWeek, startOfMonth, endOfMonth } from 'date-fns'
 import { ja } from 'date-fns/locale'
 import type { ExpenseWithCategory } from '@/types/expense'
 
-interface CategoryBarChartProps {
+interface ExpenseTrendChartProps {
   expenses: ExpenseWithCategory[]
   period: 'daily' | 'weekly' | 'monthly'
   dateRange?: 'today' | 'week' | 'month' | 'custom'
 }
 
-export function CategoryBarChart({ expenses, period, dateRange }: CategoryBarChartProps) {
-  // 期間ごとのデータを生成
+export function ExpenseTrendChart({ expenses, period, dateRange }: ExpenseTrendChartProps) {
   const generateChartData = () => {
     if (expenses.length === 0) return []
 
@@ -26,35 +24,29 @@ export function CategoryBarChart({ expenses, period, dateRange }: CategoryBarCha
     let intervals: Date[] = []
     let formatStr = ''
 
-    // dateRangeと期間に応じて適切な表示形式を決定
+    // 期間に応じた間隔とフォーマットを設定
     switch (period) {
       case 'daily':
         intervals = eachDayOfInterval({ start: minDate, end: maxDate })
         if (dateRange === 'today') {
-          // 今日の場合、支出がある時間帯のみ表示するため、hourlyにする
+          // 今日の場合、時間別に表示
           const hourlyIntervals: Date[] = []
-          expenses.forEach(expense => {
-            const hour = new Date(expense.date)
-            hour.setMinutes(0, 0, 0)
-            if (!hourlyIntervals.find(h => h.getTime() === hour.getTime())) {
-              hourlyIntervals.push(hour)
-            }
-          })
-          intervals = hourlyIntervals.sort((a, b) => a.getTime() - b.getTime())
+          for (let hour = 0; hour < 24; hour++) {
+            const date = new Date(minDate)
+            date.setHours(hour, 0, 0, 0)
+            hourlyIntervals.push(date)
+          }
+          intervals = hourlyIntervals
           formatStr = 'HH:mm'
         } else if (dateRange === 'week') {
-          formatStr = 'M/d (eee)'  // 曜日付き
+          formatStr = 'M/d (eee)' // 曜日付き
         } else {
           formatStr = 'M/d'
         }
         break
       case 'weekly':
         intervals = eachWeekOfInterval({ start: minDate, end: maxDate }, { weekStartsOn: 1 })
-        if (dateRange === 'month') {
-          formatStr = 'M/d週'
-        } else {
-          formatStr = 'M/d〜'
-        }
+        formatStr = 'M/d週'
         break
       case 'monthly':
         intervals = eachMonthOfInterval({ start: minDate, end: maxDate })
@@ -93,44 +85,37 @@ export function CategoryBarChart({ expenses, period, dateRange }: CategoryBarCha
         return expenseDate >= periodStart && expenseDate <= periodEnd
       })
 
-      // カテゴリ別に集計
-      const categoryTotals: Record<string, number> = {}
-      categories.forEach(category => {
-        const total = periodExpenses
-          .filter(e => e.category_id === category.id)
-          .reduce((sum, e) => sum + e.amount, 0)
-        if (total > 0) {
-          categoryTotals[category.name] = total
-        }
-      })
+      const total = periodExpenses.reduce((sum, e) => sum + e.amount, 0)
 
       return {
         date: format(interval, formatStr, { locale: ja }),
-        ...categoryTotals,
-        total: periodExpenses.reduce((sum, e) => sum + e.amount, 0)
+        amount: total,
+        count: periodExpenses.length
       }
-    }).filter(d => d.total > 0) // 支出がない期間は除外
+    })
 
+    // 支出がない期間も0として表示（連続性のため）
     return data
   }
 
   const data = generateChartData()
 
-  const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: Array<{ value: number; name: string; color: string }>; label?: string }) => {
+  const CustomTooltip = ({ active, payload, label }: { 
+    active?: boolean
+    payload?: Array<{ value: number; payload: { count: number } }>
+    label?: string 
+  }) => {
     if (active && payload && payload.length) {
-      const total = payload.reduce((sum, entry) => sum + (entry.value || 0), 0)
       return (
         <div className="bg-white p-4 rounded-lg shadow-lg border border-gray-200">
           <p className="font-semibold mb-2">{label}</p>
-          {payload.map((entry, index) => (
-            <div key={index} className="flex justify-between gap-4 text-sm">
-              <span style={{ color: entry.color }}>{entry.name}:</span>
-              <span className="font-semibold">{formatCurrency(entry.value)}</span>
+          <div className="space-y-1">
+            <div className="text-lg font-bold text-gray-900">
+              {formatCurrency(payload[0].value)}
             </div>
-          ))}
-          <div className="border-t mt-2 pt-2 flex justify-between font-bold">
-            <span>合計:</span>
-            <span>{formatCurrency(total)}</span>
+            <div className="text-sm text-gray-600">
+              支出件数: {payload[0].payload.count}件
+            </div>
           </div>
         </div>
       )
@@ -146,60 +131,44 @@ export function CategoryBarChart({ expenses, period, dateRange }: CategoryBarCha
     )
   }
 
-  // 使用されているカテゴリを取得
-  const usedCategories = new Set<string>()
-  data.forEach(d => {
-    Object.keys(d).forEach(key => {
-      if (key !== 'date' && key !== 'total') {
-        usedCategories.add(key)
-      }
-    })
-  })
-
-  const COLORS = [
-    '#f59e0b', // amber-500
-    '#3b82f6', // blue-500
-    '#10b981', // emerald-500
-    '#8b5cf6', // violet-500
-    '#ec4899', // pink-500
-    '#06b6d4', // cyan-500
-    '#f97316', // orange-500
-    '#6366f1', // indigo-500
-    '#64748b', // slate-500
-  ]
+  // 最大値を計算してY軸の範囲を決定
+  const maxAmount = Math.max(...data.map(d => d.amount))
+  const yAxisMax = Math.ceil(maxAmount / 10000) * 10000 || 10000
 
   return (
     <ResponsiveContainer width="100%" height={400}>
-      <BarChart
+      <LineChart
         data={data}
-        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+        margin={{ top: 20, right: 30, left: 20, bottom: period === 'monthly' ? 80 : 50 }}
       >
         <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
         <XAxis 
           dataKey="date" 
           tick={{ fontSize: 12 }}
-          angle={period === 'monthly' ? -45 : 0}
-          textAnchor={period === 'monthly' ? 'end' : 'middle'}
-          height={period === 'monthly' ? 80 : 30}
+          angle={period === 'monthly' ? -45 : period === 'weekly' ? -30 : 0}
+          textAnchor={period === 'monthly' ? 'end' : period === 'weekly' ? 'end' : 'middle'}
+          height={period === 'monthly' ? 80 : period === 'weekly' ? 60 : 30}
         />
         <YAxis 
           tick={{ fontSize: 12 }}
           tickFormatter={(value) => `¥${(value / 1000).toFixed(0)}k`}
+          domain={[0, yAxisMax]}
         />
         <Tooltip content={<CustomTooltip />} />
         <Legend 
           wrapperStyle={{ paddingTop: '20px' }}
-          iconType="rect"
+          iconType="line"
         />
-        {Array.from(usedCategories).map((category, index) => (
-          <Bar
-            key={category}
-            dataKey={category}
-            stackId="a"
-            fill={COLORS[index % COLORS.length]}
-          />
-        ))}
-      </BarChart>
+        <Line
+          type="monotone"
+          dataKey="amount"
+          name="支出額"
+          stroke="#3b82f6"
+          strokeWidth={2}
+          dot={{ fill: '#3b82f6', r: 4 }}
+          activeDot={{ r: 6 }}
+        />
+      </LineChart>
     </ResponsiveContainer>
   )
 }

@@ -7,8 +7,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { CategoryPieChart } from '@/components/charts/category-pie-chart'
 import { CategoryBarChart } from '@/components/charts/category-bar-chart'
 import { PeriodComparison } from '@/components/charts/period-comparison'
+import { ExpenseTrendChart } from '@/components/charts/expense-trend-chart'
 import { expenseApi } from '@/lib/api'
-import { Crown, Calendar, TrendingUp, PieChart, BarChart3 } from 'lucide-react'
+import { Crown, Calendar, TrendingUp, PieChart, BarChart3, LineChart } from 'lucide-react'
 import { format, startOfDay, endOfDay, startOfWeek, endOfWeek, startOfMonth, endOfMonth, subDays, subWeeks, subMonths } from 'date-fns'
 import type { ExpenseWithCategory } from '@/types/expense'
 
@@ -29,6 +30,20 @@ export function AnalyticsClient({ }: AnalyticsClientProps) {
     previous: number
     percentageChange: number
   } | null>(null)
+
+  // 日付範囲に応じた推奨される集計単位を取得
+  const getRecommendedPeriod = (range: DateRange): PeriodType => {
+    switch (range) {
+      case 'today':
+        return 'daily' // 今日を選んだら日次表示
+      case 'week':
+        return 'daily' // 今週を選んだら日次表示
+      case 'month':
+        return 'weekly' // 今月を選んだら週次表示
+      default:
+        return 'monthly'
+    }
+  }
 
   const getDateRange = (range: DateRange): { start: Date; end: Date } => {
     const now = new Date()
@@ -130,7 +145,10 @@ export function AnalyticsClient({ }: AnalyticsClientProps) {
   }
 
   const handleDateRangeChange = (value: string) => {
-    setDateRange(value as DateRange)
+    const newDateRange = value as DateRange
+    setDateRange(newDateRange)
+    // 日付範囲に応じて集計単位を自動調整
+    setPeriod(getRecommendedPeriod(newDateRange))
   }
 
   return (
@@ -195,7 +213,26 @@ export function AnalyticsClient({ }: AnalyticsClientProps) {
         </Card>
       )}
 
-      {/* グラフタブ */}
+      {/* 支出推移グラフ（常時表示） */}
+      <Card className="mb-6 bg-gradient-to-br from-white via-blue-50/20 to-cyan-50/20">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <LineChart className="h-5 w-5 text-blue-600" />
+            支出推移
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {isLoading ? (
+            <div className="h-[400px] flex items-center justify-center">
+              <div className="animate-pulse text-gray-400">読み込み中...</div>
+            </div>
+          ) : (
+            <ExpenseTrendChart expenses={expenses} period={period} dateRange={dateRange} />
+          )}
+        </CardContent>
+      </Card>
+
+      {/* カテゴリ分析タブ */}
       <Tabs defaultValue="pie" className="space-y-4">
         <TabsList className="grid w-full grid-cols-2 bg-gradient-to-r from-gray-100 to-gray-200">
           <TabsTrigger value="pie" className="data-[state=active]:bg-white">
@@ -236,7 +273,7 @@ export function AnalyticsClient({ }: AnalyticsClientProps) {
                   <div className="animate-pulse text-gray-400">読み込み中...</div>
                 </div>
               ) : (
-                <CategoryBarChart expenses={expenses} period={period} />
+                <CategoryBarChart expenses={expenses} period={period} dateRange={dateRange} />
               )}
             </CardContent>
           </Card>

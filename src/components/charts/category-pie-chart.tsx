@@ -59,7 +59,10 @@ export function CategoryPieChart({ expenses }: CategoryPieChartProps) {
     return null
   }
 
-  const CustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: { cx: number; cy: number; midAngle: number; innerRadius: number; outerRadius: number; percent: number }) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const CustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) => {
+    if (!cx || !cy || midAngle === undefined || !innerRadius || !outerRadius || !percent) return null
+    
     const RADIAN = Math.PI / 180
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5
     const x = cx + radius * Math.cos(-midAngle * RADIAN)
@@ -110,9 +113,10 @@ export function CategoryPieChart({ expenses }: CategoryPieChartProps) {
         <Legend 
           verticalAlign="bottom" 
           height={36}
-          formatter={(value, entry) => (
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          formatter={(value, entry: any) => (
             <span className="text-sm">
-              {value} ({formatCurrency(entry.payload.value)})
+              {value} ({formatCurrency(entry.payload?.value || 0)})
             </span>
           )}
         />

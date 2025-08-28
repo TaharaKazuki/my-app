@@ -17,7 +17,6 @@ export const expenseSchema = z.object({
   description: z
     .string()
     .max(500, 'メモは500文字以内で入力してください')
-    .optional()
     .default(''),
 })
 
